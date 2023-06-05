@@ -5,7 +5,7 @@ public class Coordinates {
 	private int latitute;
 	private int height;
 
-	Coordinates(int p_longitude, int p_latitute, int p_height) {
+	public Coordinates(int p_longitude, int p_latitute, int p_height) {
 		this.longitude = p_longitude;
 		this.latitute = p_latitute;
 		this.height = p_height;
@@ -26,8 +26,10 @@ public class Coordinates {
 	public Coordinates add(int p_longitude, int p_latitute, int p_height) throws ForcedLandingException {
 		var result = new Coordinates(this.longitude + p_longitude, this.latitute + p_latitute, this.height + p_height);
 
-		if (result.height <= 0) throw new ForcedLandingException();
-		if (result.height > 100) result.height = 100;
+		if (result.height <= 0)
+			throw new ForcedLandingException();
+		if (result.height > 100)
+			result.height = 100;
 
 		return result;
 
@@ -38,6 +40,24 @@ public class Coordinates {
 	}
 
 	public static class ForcedLandingException extends Exception {
-		public ForcedLandingException() { super(); }
+		public ForcedLandingException() {
+			super();
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		int mask = (this.longitude & 0xFF) | ((this.latitute >> 8) & 0xFF) | ((this.height >> 16) & 0xFF);
+
+		return mask;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj != null && obj instanceof Coordinates c) {
+			return this.hashCode() == obj.hashCode();
+		}
+
+		return super.equals(obj);
 	}
 }

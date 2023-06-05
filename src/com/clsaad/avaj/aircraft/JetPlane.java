@@ -1,6 +1,6 @@
 package com.clsaad.avaj.aircraft;
 
-import com.clsaad.avaj.WeatherProvider;
+import com.clsaad.avaj.Output;
 import com.clsaad.avaj.aircraft.Coordinates.ForcedLandingException;
 
 public class JetPlane extends Aircraft {
@@ -10,28 +10,29 @@ public class JetPlane extends Aircraft {
 
 	@Override
 	public void updateConditions() {
-		var conditions = WeatherProvider.getInstance().getCurrentWeather(this.coordinates);
+		var conditions = this.weatherTower.getWeather(this.coordinates);
 
 		try {
 			switch (conditions) {
 				case "SUN" -> {
-					System.out.println(toString() + ": Niiiiiiioooooom. Sunny sun.");
+					Output.out.println(toString() + ": Niiiiiiioooooom. Sunny sun.");
 					this.coordinates = this.coordinates.add(0, 10, 2);
 				}
 				case "RAIN" -> {
-					System.out.println(toString() + ": Niiiiiiiioooooom. Bloub bloub water.");
+					Output.out.println(toString() + ": Niiiiiiiioooooom. Bloub bloub water.");
 					this.coordinates = this.coordinates.add(0, 5, 0);
 				}
 				case "FOG" -> {
-					System.out.println(toString() + ": niiiooom. Big plane is scared0");
+					Output.out.println(toString() + ": niiiooom. Big plane is scared");
 					this.coordinates = this.coordinates.add(0, 1, 0);
 				}
 				case "SNOW" -> {
-					System.out.println(toString() + ": Not niiiiioooom. Snow is bad.");
+					Output.out.println(toString() + ": Not niiiiioooom. Snow is bad.");
 					this.coordinates = this.coordinates.add(0, 0, -7);
 				}
 			}
 		} catch (ForcedLandingException e) {
+			Output.out.println(toString() + " landing");
 			this.weatherTower.unregister(this);
 		}
 	}

@@ -14,7 +14,7 @@ public final class AircraftFactory {
 	public static Flyable newAircraft(String p_type, String p_name, Coordinates p_coordinates) {
 		var id = idIncrement.getAndIncrement();
 
-		return switch (p_name.toLowerCase()) {
+		return switch (p_type.toLowerCase()) {
 			case "baloon" -> new Baloon(id, p_name, p_coordinates);
 			case "jetplane" -> new JetPlane(id, p_name, p_coordinates);
 			case "helicopter" -> new Helicopter(id, p_name, p_coordinates);
