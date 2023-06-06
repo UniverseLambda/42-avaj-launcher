@@ -31,6 +31,10 @@ public class FromFileGenerator {
 					continue;
 				}
 
+				if (line.isEmpty()) {
+					continue;
+				}
+
 				var components = line.split("[\\t ]+");
 
 				var tmp_comps = new ArrayList<>(components.length);
@@ -55,7 +59,7 @@ public class FromFileGenerator {
 				var name = components[1];
 				var longitude = tryParseInteger(components[2], lineIdx);
 				var latitude = tryParseInteger(components[3], lineIdx);
-				var height = Math.min(tryParseInteger(components[4], lineIdx), 100);
+				var height = tryParseInteger(components[4], lineIdx);
 
 				if (longitude < 0) {
 					System.out.println("Invalid longitude value at line " + lineIdx + ": " + longitude);
@@ -70,6 +74,11 @@ public class FromFileGenerator {
 				if (height < 0) {
 					System.out.println("Invalid height value at line " + lineIdx + ": " + height);
 					return null;
+				}
+
+				if (height > 100) {
+					System.out.println("Warning: at line " + lineIdx + ", height < 100, capping it at 100");
+					height = 100;
 				}
 
 				aircrafts.add(AircraftFactory.newAircraft(type, name, new Coordinates(longitude, latitude, height)));
@@ -94,10 +103,22 @@ public class FromFileGenerator {
 
 	private static int tryParseInteger(String str, int lineIdx) throws SilentException {
 		try {
-			return Integer.parseInt(str);
+			if (str.length() - str.codePoints().takeWhile(i -> i == '0').count() > 10) {
+				System.out.println("Integer too big at line " + lineIdx);
+				throw new SilentException();
+			}
 
+			var value = Long.parseLong(str);
+
+			if (value > (long) Integer.MAX_VALUE) {
+				System.out.println("Integer too big at line " + lineIdx);
+				throw new SilentException();
+			}
+
+			return (int) value;
+		} catch (SilentException e) {
 		} catch (Exception e) {
-			System.out.println("Integer expected at line " + lineIdx);
+			System.out.println("Integer expected at line " + lineIdx + "(" + e + ")");
 		}
 		throw new SilentException();
 	}

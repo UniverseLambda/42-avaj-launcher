@@ -26,6 +26,20 @@ public class Coordinates {
 	public Coordinates add(int p_longitude, int p_latitute, int p_height) throws ForcedLandingException {
 		var result = new Coordinates(this.longitude + p_longitude, this.latitute + p_latitute, this.height + p_height);
 
+		if (result.longitude < 0) {
+			System.out.println(
+					"SIMULATION WARNING: computation of new coordinates would overflow longitude. Capping it at maximum value...");
+
+			result.longitude = Integer.MAX_VALUE;
+		}
+
+		if (result.latitute < 0) {
+			System.out.println(
+					"SIMULATION WARNING: computation of new coordinates would overflow latitute. Capping it at maximum value...");
+
+			result.latitute = Integer.MAX_VALUE;
+		}
+
 		if (result.height <= 0)
 			throw new ForcedLandingException();
 		if (result.height > 100)
@@ -44,6 +58,10 @@ public class Coordinates {
 			super();
 		}
 	}
+
+	// public static class WouldOverflowException {
+
+	// }
 
 	@Override
 	public int hashCode() {

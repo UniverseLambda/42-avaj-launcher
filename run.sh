@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e
+
 mkdir -p bin
 sources=$(find * -name "*.java")
 javac $sources -d bin --release 17
