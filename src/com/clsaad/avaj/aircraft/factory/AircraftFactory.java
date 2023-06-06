@@ -18,7 +18,7 @@ public final class AircraftFactory {
 			case "baloon" -> new Baloon(id, p_name, p_coordinates);
 			case "jetplane" -> new JetPlane(id, p_name, p_coordinates);
 			case "helicopter" -> new Helicopter(id, p_name, p_coordinates);
-			default -> throw new IllegalArgumentException("Invalid Aircraft type: " + p_name);
+			default -> throw new IllegalArgumentException("Invalid Aircraft type: " + p_type);
 		};
 	}
 }
