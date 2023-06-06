@@ -7,6 +7,16 @@ import com.clsaad.avaj.tower.WeatherTower;
 
 public class Main {
 	public static void main(String[] args) {
+		if (args.length == 0) {
+			System.out.println("Missing scenarion file in arguments");
+			System.exit(1);
+		}
+
+		if (args.length > 1) {
+			System.out.println("Too many arguments");
+			System.exit(1);
+		}
+
 		var conf = FromFileGenerator.generate(args[0]);
 
 		if (conf == null) {
