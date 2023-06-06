@@ -77,7 +77,7 @@ public class FromFileGenerator {
 				}
 
 				if (height > 100) {
-					System.out.println("Warning: at line " + lineIdx + ", height < 100, capping it at 100");
+					System.out.println("Warning: at line " + lineIdx + ", height > 100, capping it at 100");
 					height = 100;
 				}
 
