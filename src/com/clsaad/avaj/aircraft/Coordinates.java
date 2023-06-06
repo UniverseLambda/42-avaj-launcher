@@ -47,7 +47,7 @@ public class Coordinates {
 
 	@Override
 	public int hashCode() {
-		int mask = (this.longitude & 0xFF) | ((this.latitute >> 8) & 0xFF) | ((this.height >> 16) & 0xFF);
+		int mask = (this.longitude & 0xFF) | ((this.latitute & 0xFF) << 8) | ((this.height & 0xFF) << 16);
 
 		return mask;
 	}
@@ -55,7 +55,7 @@ public class Coordinates {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj != null && obj instanceof Coordinates c) {
-			return this.hashCode() == obj.hashCode();
+			return this.longitude == c.longitude && this.latitute == c.latitute && this.height == c.height;
 		}
 
 		return super.equals(obj);

@@ -26,8 +26,6 @@ public class FromFileGenerator {
 			for (var line : (Iterable<String>) lines::iterator) {
 				++lineIdx;
 
-				System.out.println("line: " + line);
-
 				if (iterCount.isEmpty()) {
 					iterCount = Optional.of(tryParseInteger(line, lineIdx));
 					continue;
